@@ -1,0 +1,16 @@
+body{
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.y{ 
+    
+    color: yellow;
+    
+}
+.a{
+    color: azure;
+}
+

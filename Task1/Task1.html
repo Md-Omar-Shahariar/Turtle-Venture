@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/515f385e2e.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="./Task1.css" />
+    <script>
+      let flag = 1;
+      function light() {
+        if (flag == 1) {
+          let a = document.getElementById("light").classList;
+          a.remove("a");
+          a.add("y");
+          flag = 0;
+        } else {
+          let a = document.getElementById("light").classList;
+          a.remove("y");
+          a.add("a");
+          flag = 1;
+        }
+      }
+    </script>
+    <title>Document</title>
+  </head>
+  <body>
+    <i
+      onclick="light()"
+      style="font-size: 200px"
+      id="light"
+      class="fa a fa-lightbulb"
+    ></i>
+  </body>
+</html>
