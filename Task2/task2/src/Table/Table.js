@@ -5,13 +5,13 @@ const Table = ({ data }) => {
   return (
     <tbody>
       {data?.map((d, index) => (
-        <tr>
+        <tr key={`data-Index-${d.id}`}>
           <th scope="row">{index + 1}</th>
-          <td>{d.id}</td>
-          <td>{d.name}</td>
-          <td>{d.email}</td>
-          <td>{d.gender}</td>
-          <td>{d.status}</td>
+          <td>{d?.id || "ID"} </td>
+          <td>{d?.name || "Name"}</td>
+          <td>{d?.email || "Email"}</td>
+          <td>{d?.gender || "Gender"}</td>
+          <td>{d?.status || "Status"}</td>
         </tr>
       ))}
     </tbody>
