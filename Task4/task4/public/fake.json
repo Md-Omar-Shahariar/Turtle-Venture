@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Putin FM",
+        "channel": "66,6",
+        "img": "https://freedesignfile.com/upload/2017/05/Alien-cartoon-vector-design-02.jpg",
+        "id": 1
+    },
+    {
+        "name": "Dribbble FM",
+        "channel": "101,2",
+        "img": "https://freedesignfile.com/upload/2017/05/Alien-cartoon-vector-design-02.jpg",
+        "id": 2
+    },
+    {
+        "name": "Doge FM",
+        "channel": "99,4",
+        "img": "https://freedesignfile.com/upload/2017/05/Alien-cartoon-vector-design-02.jpg",
+        "id": 3
+    },
+    {
+        "name": "Ballads FM",
+        "channel": "87,1",
+        "img": "https://freedesignfile.com/upload/2017/05/Alien-cartoon-vector-design-02.jpg",
+        "id": 4
+    },
+    {
+        "name": "Maximum FM",
+        "channel": "142,2",
+        "img": "https://freedesignfile.com/upload/2017/05/Alien-cartoon-vector-design-02.jpg",
+        "id": 5
+    }
+]
