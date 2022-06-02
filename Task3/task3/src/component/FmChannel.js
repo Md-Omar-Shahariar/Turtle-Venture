@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import plus from "../img/plus.png";
 import minus from "../img/minus.png";
 
