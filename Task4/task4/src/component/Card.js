@@ -10,13 +10,13 @@ const Card = () => {
 
   const [fm, setFm] = useState("");
   useEffect(() => {
-    fetch("fake.json")
+    fetch("http://localhost:5000/stations")
       .then((res) => res.json())
       .then((data) => setChannel(data));
   }, [fm]);
   console.log(channel);
   return (
-    <div className="mx-auto  w-[380px] h-[600px]  shadow-2xl overflow-hidden rounded-[60px] flex flex-col justify-between bg-[#2a2a35]">
+    <div className="mx-auto mt-20 w-[380px] h-[600px]  shadow-2xl overflow-hidden rounded-[60px] flex flex-col justify-between bg-[#2a2a35]">
       <div>
         <div className="bg-[#eeae61] py-7 flex h-[100px] justify-around items-center">
           <button className=" bg-transparent  border-0">

@@ -1,11 +1,40 @@
-import logo from "./logo.svg";
 import "./App.css";
-import Card from "./component/Card";
+import { Route, Routes } from "react-router-dom";
+import Home from "./Home";
+import Login from "./component/Login";
+import Navbar from "./component/Navbar";
+import SignUp from "./component/SignUp";
+
+import RequiredAuth from "./component/RequiredAuth";
+import ManageStations from "./component/ManageStations";
+import Add from "./component/Add";
 
 function App() {
   return (
-    <div className="App container flex items-center mx-auto max-w-7xl min-h-screen">
-      <Card></Card>
+    <div className="App ">
+      <Navbar></Navbar>
+      <Routes>
+        <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/" element={<Home></Home>}></Route>
+        <Route path="/signUp" element={<SignUp></SignUp>}></Route>
+        <Route
+          path="/manageStations"
+          element={
+            <RequiredAuth>
+              <ManageStations></ManageStations>
+            </RequiredAuth>
+          }
+        ></Route>
+        <Route
+          path="/Add"
+          element={
+            <RequiredAuth>
+              <Add></Add>
+            </RequiredAuth>
+          }
+        ></Route>
+        <Route path="/signUp" element={<SignUp></SignUp>}></Route>
+      </Routes>
     </div>
   );
 }
