@@ -1,4 +1,5 @@
 import React from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -30,6 +31,25 @@ const Login = () => {
     );
   }
   let from = location?.state?.from?.pathname || "/";
+
+  if (user || gUser) {
+    navigate(from, { replace: true });
+  }
+
+  const reset = async () => {
+    const email = document.getElementById("email").value;
+    console.log(email);
+    if (email) {
+      await sendPasswordResetEmail(email);
+      if (email) {
+        toast("Sent email");
+      } else {
+        toast.error("Please enter email address");
+      }
+    } else {
+      toast.error("Please Enter Email");
+    }
+  };
 
   const onSubmit = async (data) => {
     await signInWithEmailAndPassword(data.email, data.password);
@@ -112,7 +132,10 @@ const Login = () => {
             />
             <p className="mt-3 text-center">
               Forget Password?
-              <span className="btn btn-link text-decoration-none ">
+              <span
+                onClick={() => reset()}
+                className="btn btn-link text-decoration-none "
+              >
                 Reset Password
               </span>
             </p>
@@ -135,6 +158,7 @@ const Login = () => {
           </button>
         </div>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
   );
 };

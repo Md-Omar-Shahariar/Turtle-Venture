@@ -37,6 +37,7 @@ const SignUp = () => {
 
     await updateProfile({ displayName: data.name });
     console.log("Updated");
+    navigate(from, { replace: true });
   };
 
   return (

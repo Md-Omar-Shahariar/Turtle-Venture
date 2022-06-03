@@ -25,7 +25,7 @@ const Navbar = () => {
           {user ? (
             <div className="flex items-center">
               <button
-                className="font-bold bg-accent btn btn-sm "
+                className="font-bold bg-primary btn btn-sm "
                 onClick={logout}
               >
                 SignOut
