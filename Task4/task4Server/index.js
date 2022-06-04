@@ -6,6 +6,9 @@ require("dotenv").config();
 
 const port = process.env.PORT || 5000;
 
+app.use(cors());
+app.use(express.json());
+
 const uri = `mongodb+srv://${process.env.USER_NAME}:${process.env.USER_PASSWORD}@cluster0.e7ekp.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   useNewUrlParser: true,
@@ -18,14 +21,18 @@ async function run() {
     await client.connect();
     const stationCollection = client.db("radio").collection("stations");
 
-    // Query for a movie that has the title 'Back to the Future'
+    app.get("/stations", async (req, res) => {
+      const result = await stationCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.get("/", (req, res) => {
+      res.send("Hello World");
+    });
   } finally {
   }
 }
 run().catch(console.dir);
-
-app.use(cors());
-app.use(express.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World");
