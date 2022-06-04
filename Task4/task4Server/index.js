@@ -25,6 +25,16 @@ async function run() {
       const result = await stationCollection.find().toArray();
       res.send(result);
     });
+    app.post("/stations", async (req, res) => {
+      const count = await stationCollection.estimatedDocumentCount();
+      const body = req.body;
+      body.id = count + 1;
+
+      console.log(body);
+
+      const result = await stationCollection.insertOne(body);
+      res.send(result);
+    });
 
     app.get("/", (req, res) => {
       res.send("Hello World");

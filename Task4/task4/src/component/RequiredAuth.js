@@ -8,6 +8,10 @@ const RequiredAuth = ({ children }) => {
 
   const [user, loading, error] = useAuthState(auth);
 
+  if (loading) {
+    return <p>loading</p>;
+  }
+
   // console.log(user);
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
