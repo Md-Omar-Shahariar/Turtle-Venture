@@ -14,7 +14,7 @@ const Add = () => {
     const url = e.target.url.value;
 
     const stations = { name: station, channel: channel, img: url };
-    fetch("http://localhost:5000/stations", {
+    fetch("https://radiostation01.herokuapp.com/stations", {
       method: "POST",
       headers: {
         "content-type": "application/json",

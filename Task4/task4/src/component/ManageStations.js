@@ -4,16 +4,18 @@ import ManageStationRow from "./ManageStationRow";
 const ManageStations = () => {
   const [channels, setChannels] = useState({});
   const [bool, setBool] = useState(true);
+  const [flag, SetFlag] = useState(true);
   console.log(channels);
+  console.log(flag);
 
   useEffect(() => {
-    fetch("http://localhost:5000/stations")
+    fetch("https://radiostation01.herokuapp.com/stations")
       .then((res) => res.json())
       .then((data) => {
         setChannels(data);
         setBool(false);
       });
-  }, []);
+  }, [flag]);
   if (bool === true) {
     return <p>Loading</p>;
   }
@@ -45,6 +47,8 @@ const ManageStations = () => {
               <ManageStationRow
                 key={index}
                 channel={channel}
+                flag={flag}
+                SetFlag={SetFlag}
               ></ManageStationRow>
             ))}
           </tbody>

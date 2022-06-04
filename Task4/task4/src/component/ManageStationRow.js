@@ -4,11 +4,29 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
 
-const ManageStationRow = ({ index, channel }) => {
+const ManageStationRow = ({ index, channel, flag, SetFlag }) => {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
 
   const [update, SetUpdate] = useState(null);
+
+  const handleDelete = () => {
+    if (window.confirm("Are You Sure")) {
+      fetch(
+        `https://radiostation01.herokuapp.com/stations?_id=${channel._id}`,
+        {
+          method: "DELETE",
+        }
+      )
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.deletedCount) {
+            toast.success("Product Deleted");
+            SetFlag(!flag);
+          }
+        });
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +39,7 @@ const ManageStationRow = ({ index, channel }) => {
       channel: Updatechannel,
       img: Updateurl,
     };
-    fetch(`http://localhost:5000/stations?_id=${channel._id}`, {
+    fetch(`https://radiostation01.herokuapp.com/stations?_id=${channel._id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -31,6 +49,7 @@ const ManageStationRow = ({ index, channel }) => {
       .then((res) => res.json())
       .then((data) => {
         if (data.modifiedCount) {
+          SetFlag(!flag);
           toast.success("Updated Successfully");
           navigate("/");
         } else {
@@ -122,7 +141,9 @@ const ManageStationRow = ({ index, channel }) => {
             </div>
           </>
         )}
-        <button className="btn btn-error">Delete</button>
+        <button onClick={handleDelete} className="btn btn-error">
+          Delete
+        </button>
       </td>
     </tr>
   );
