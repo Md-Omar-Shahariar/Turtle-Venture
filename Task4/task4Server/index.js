@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 require("dotenv").config();
 
@@ -33,6 +33,32 @@ async function run() {
       console.log(body);
 
       const result = await stationCollection.insertOne(body);
+      res.send(result);
+    });
+    app.put("/stations", async (req, res) => {
+      const count = await stationCollection.estimatedDocumentCount();
+      const body = req.body;
+      const query = { _id: ObjectId(req.query._id) };
+      // body.id = count + 1;
+      console.log(query);
+
+      const find = await stationCollection.findOne(query);
+
+      console.log(find);
+
+      const updateDoc = {
+        $set: {
+          name: req.body.name,
+          channel: req.body.channel,
+          img: req.body.img,
+        },
+      };
+
+      const result = await stationCollection.updateOne(query, updateDoc);
+
+      console.log(body);
+      console.log(result);
+
       res.send(result);
     });
 

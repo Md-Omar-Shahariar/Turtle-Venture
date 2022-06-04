@@ -4,14 +4,12 @@ import minus from "../img/minus.png";
 const FmChannel = ({ fm, setFm, setImgIndex, imgIndex, index }) => {
   const handleFm = () => {
     setFm(fm);
-    setImgIndex(index + 1);
+    setImgIndex(fm._id);
   };
-  console.log(index);
-  console.log(fm.id, imgIndex);
 
   return (
     <div className="border-b-[1px] mx-5 border-gray-600 py-5">
-      {fm.id === imgIndex && (
+      {fm._id === imgIndex && (
         <div className="py-4  flex items-center justify-between ">
           <button
             style={{ height: "40px", width: "40px" }}

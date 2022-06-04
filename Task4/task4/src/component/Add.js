@@ -1,8 +1,11 @@
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import auth from "../firebase.init";
 
 const Add = () => {
+  const navigate = useNavigate();
   const [user] = useAuthState(auth);
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +22,14 @@ const Add = () => {
       body: JSON.stringify(stations),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        if (data.insertedId) {
+          toast.success("Added Successfully");
+          navigate("/manageStations");
+        } else {
+          toast.error("Failed To Add");
+        }
+      });
   };
   return (
     <div className="container mx-auto max-w-7xl p-10 flex flex-col  items-center">
