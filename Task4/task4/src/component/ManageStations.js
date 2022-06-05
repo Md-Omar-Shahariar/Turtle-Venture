@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import ManageStationRow from "./ManageStationRow";
+import { signOut } from "firebase/auth";
+import auth from "../firebase.init";
 
 const ManageStations = () => {
   const [channels, setChannels] = useState({});
@@ -7,11 +10,26 @@ const ManageStations = () => {
   const [flag, SetFlag] = useState(true);
   console.log(channels);
   console.log(flag);
+  const navigate = useNavigate();
+  const logout = () => {
+    signOut(auth);
+    localStorage.removeItem("accessToken");
+    navigate("/");
+  };
 
   useEffect(() => {
-    fetch("https://radiostation01.herokuapp.com/stations")
+    fetch("https://radiostation01.herokuapp.com/stations", {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
+        const { message } = data;
+        if (message === "Forbidden Token") {
+          logout();
+          navigate("/login");
+        }
         setChannels(data);
         setBool(false);
       });
@@ -26,7 +44,7 @@ const ManageStations = () => {
           <thead class="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" class="px-6 py-3">
-                ID
+                NO.
               </th>
               <th scope="col" class="px-6 py-3">
                 Station Name
@@ -46,6 +64,7 @@ const ManageStations = () => {
             {channels?.map((channel, index) => (
               <ManageStationRow
                 key={index}
+                index={index}
                 channel={channel}
                 flag={flag}
                 SetFlag={SetFlag}

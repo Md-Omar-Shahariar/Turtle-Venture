@@ -9,6 +9,7 @@ import {
   useSignInWithGoogle,
 } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
+import useToken from "./authentication/useToken";
 
 const Login = () => {
   const {
@@ -24,6 +25,8 @@ const Login = () => {
   const [signInWithGoogle, gUser, gloading, gError] = useSignInWithGoogle(auth);
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
+
+  const [token] = useToken(user || gUser);
   let errorMessage;
   if (error || gError) {
     errorMessage = (
@@ -31,8 +34,9 @@ const Login = () => {
     );
   }
   let from = location?.state?.from?.pathname || "/";
+  console.log(token);
 
-  if (user || gUser) {
+  if (token) {
     navigate(from, { replace: true });
   }
 

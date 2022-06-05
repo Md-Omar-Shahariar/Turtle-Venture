@@ -16,6 +16,9 @@ const ManageStationRow = ({ index, channel, flag, SetFlag }) => {
         `https://radiostation01.herokuapp.com/stations?_id=${channel._id}`,
         {
           method: "DELETE",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
         }
       )
         .then((res) => res.json())
@@ -43,6 +46,8 @@ const ManageStationRow = ({ index, channel, flag, SetFlag }) => {
       method: "PUT",
       headers: {
         "content-type": "application/json",
+
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify(stations),
     })
@@ -63,7 +68,7 @@ const ManageStationRow = ({ index, channel, flag, SetFlag }) => {
         scope="row"
         class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
       >
-        {channel.id}
+        {index + 1}
       </th>
       <td class="px-6 py-4">{channel.name}</td>
       <td class="px-6 py-4">{channel.channel}</td>

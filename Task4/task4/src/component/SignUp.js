@@ -7,6 +7,7 @@ import {
   useUpdateProfile,
 } from "react-firebase-hooks/auth";
 import auth from "../firebase.init";
+import useToken from "./authentication/useToken";
 
 const SignUp = () => {
   const location = useLocation();
@@ -17,6 +18,7 @@ const SignUp = () => {
     useCreateUserWithEmailAndPassword(auth);
 
   let from = location.state?.from?.pathname || "/";
+  const [token] = useToken(user || gUser);
   // if (token) {
   //   navigate(from, { replace: true });
   // }
@@ -37,8 +39,10 @@ const SignUp = () => {
 
     await updateProfile({ displayName: data.name });
     console.log("Updated");
-    navigate(from, { replace: true });
   };
+  if (token) {
+    navigate(from, { replace: true });
+  }
 
   return (
     <div className="min-h-screen py-20 flex justify-center items-center">

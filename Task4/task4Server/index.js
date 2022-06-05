@@ -3,6 +3,7 @@ const app = express();
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 require("dotenv").config();
+const jwt = require("jsonwebtoken");
 
 const port = process.env.PORT || 5000;
 
@@ -16,16 +17,45 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
+function verifyJWT(req, res, next) {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).send({ message: "UnAuthorized Access" });
+  }
+  const token = authHeader.split(" ")[1];
+
+  jwt.verify(token, process.env.ACCESS_TOKEN, function (err, decoded) {
+    if (err) {
+      return res.status(403).send({ message: "Forbidden Token" });
+    }
+    req.decoded = decoded;
+
+    next();
+  });
+}
+
 async function run() {
   try {
     await client.connect();
     const stationCollection = client.db("radio").collection("stations");
 
-    app.get("/stations", async (req, res) => {
+    app.get("/homeStations", async (req, res) => {
       const result = await stationCollection.find().toArray();
       res.send(result);
     });
-    app.post("/stations", async (req, res) => {
+    app.get("/stations", verifyJWT, async (req, res) => {
+      const result = await stationCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/user/:email", async (req, res) => {
+      const email = req?.params?.email;
+      const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN, {
+        expiresIn: "1d",
+      });
+
+      res.send({ token });
+    });
+    app.post("/stations", verifyJWT, async (req, res) => {
       const count = await stationCollection.estimatedDocumentCount();
       const body = req.body;
       body.id = count + 1;
@@ -35,7 +65,16 @@ async function run() {
       const result = await stationCollection.insertOne(body);
       res.send(result);
     });
-    app.put("/stations", async (req, res) => {
+
+    app.delete("/stations", verifyJWT, async (req, res) => {
+      const query = { _id: ObjectId(req.query._id) };
+
+      const result = await stationCollection.deleteOne(query);
+
+      res.send(result);
+    });
+
+    app.put("/stations", verifyJWT, async (req, res) => {
       const count = await stationCollection.estimatedDocumentCount();
       const body = req.body;
       const query = { _id: ObjectId(req.query._id) };
@@ -53,15 +92,9 @@ async function run() {
           img: req.body.img,
         },
       };
-
       const result = await stationCollection.updateOne(query, updateDoc);
-
-      console.log(body);
-      console.log(result);
-
       res.send(result);
     });
-
     app.get("/", (req, res) => {
       res.send("Hello World");
     });
@@ -69,7 +102,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
 app.get("/", (req, res) => {
   res.send("Hello World");
 });

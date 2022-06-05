@@ -10,7 +10,7 @@ const Card = () => {
 
   const [fm, setFm] = useState("");
   useEffect(() => {
-    fetch("https://radiostation01.herokuapp.com/stations")
+    fetch("https://radiostation01.herokuapp.com/homeStations",)
       .then((res) => res.json())
       .then((data) => setChannel(data));
   }, [fm]);

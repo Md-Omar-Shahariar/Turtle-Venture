@@ -3,10 +3,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import auth from "../firebase.init";
+import { signOut } from "firebase/auth";
 
 const Add = () => {
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
+  const logout = () => {
+    signOut(auth);
+    localStorage.removeItem("accessToken");
+    navigate("/");
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     const channel = e.target.channel.value;
@@ -18,11 +24,18 @@ const Add = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
+
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
       },
       body: JSON.stringify(stations),
     })
       .then((res) => res.json())
       .then((data) => {
+        const { message } = data;
+        if (message === "Forbidden Token") {
+          logout();
+          navigate("/login");
+        }
         if (data.insertedId) {
           toast.success("Added Successfully");
           navigate("/manageStations");
